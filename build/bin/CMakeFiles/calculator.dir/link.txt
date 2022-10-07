@@ -1,0 +1,1 @@
+/usr/bin/c++ -rdynamic CMakeFiles/calculator.dir/cpp/main.o CMakeFiles/calculator.dir/cpp/constant.o CMakeFiles/calculator.dir/cpp/calculator.o CMakeFiles/calculator.dir/cpp/BigNumber.o -o calculator 

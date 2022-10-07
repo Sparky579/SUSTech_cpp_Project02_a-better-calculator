@@ -1,0 +1,5 @@
+project(proejct02)
+add_subdirectory(src bin)
+install(FILES COPYRIGHT README DESTINATION share/doc/cmake)
+install(PROGRAMS Run_Calculator.sh DESTINATION bin)
+install(DIRECTORY doc/ DESTINATION share/doc/cmake)
