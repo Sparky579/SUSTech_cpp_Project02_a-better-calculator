@@ -1,1 +1,1 @@
-add_executable(calculator cpp/main.cpp cpp/constant.cpp cpp/calculator.cpp cpp/BigNumber.cpp)
+add_executable(calculator cpp/main.cpp cpp/Constant.cpp cpp/Calculator.cpp cpp/BigNumber.cpp cpp/NumberCheck.cpp cpp/Exception.cpp)

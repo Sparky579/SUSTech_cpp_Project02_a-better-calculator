@@ -5,21 +5,20 @@ class BigNumber
 {
 private:
     void set_BigNumber(std::string);
-
 public:
     BigNumber &checkCarry();
-    BigNumber &checkScale(int setted_scale);
-    bool negative_;
-    std::vector<int> digits_;
-    int dotpos_;
+    BigNumber &checkScale(int32_t setted_scale);
+    bool negative_;             // 是否为负数，是为 true 否为 false
+    std::vector<int32_t> digits_;   // 所有的有效数字
+    int32_t dotpos_;                // 小数点所在的位置
     void show();
     std::string to_string();
     BigNumber();
     BigNumber(std::string number);
-    BigNumber(int number);
+    BigNumber(int32_t number);
 };
-int BigNumberAbsCmp(BigNumber num1, BigNumber num2);
-int BigNumberCmp(BigNumber num1, BigNumber num2);
+int32_t BigNumberAbsCmp(BigNumber num1, BigNumber num2);
+int32_t BigNumberCmp(BigNumber num1, BigNumber num2);
 BigNumber BigNumberAbsAdd(BigNumber num1, BigNumber num2, bool negative);
 BigNumber BigNumberAbsSub(BigNumber num1, BigNumber num2, bool negative);
 BigNumber BigNumberAbsMul(BigNumber num1, BigNumber num2, bool negative);

@@ -191,34 +191,64 @@ cpp/BigNumber.s:
 .PHONY : cpp/BigNumber.s
 
 # target to build an object file
-cpp/calculator.o:
-	cd /home/cpp_fall2022/project02/build && $(MAKE) $(MAKESILENT) -f bin/CMakeFiles/calculator.dir/build.make bin/CMakeFiles/calculator.dir/cpp/calculator.o
-.PHONY : cpp/calculator.o
+cpp/Calculator.o:
+	cd /home/cpp_fall2022/project02/build && $(MAKE) $(MAKESILENT) -f bin/CMakeFiles/calculator.dir/build.make bin/CMakeFiles/calculator.dir/cpp/Calculator.o
+.PHONY : cpp/Calculator.o
 
 # target to preprocess a source file
-cpp/calculator.i:
-	cd /home/cpp_fall2022/project02/build && $(MAKE) $(MAKESILENT) -f bin/CMakeFiles/calculator.dir/build.make bin/CMakeFiles/calculator.dir/cpp/calculator.i
-.PHONY : cpp/calculator.i
+cpp/Calculator.i:
+	cd /home/cpp_fall2022/project02/build && $(MAKE) $(MAKESILENT) -f bin/CMakeFiles/calculator.dir/build.make bin/CMakeFiles/calculator.dir/cpp/Calculator.i
+.PHONY : cpp/Calculator.i
 
 # target to generate assembly for a file
-cpp/calculator.s:
-	cd /home/cpp_fall2022/project02/build && $(MAKE) $(MAKESILENT) -f bin/CMakeFiles/calculator.dir/build.make bin/CMakeFiles/calculator.dir/cpp/calculator.s
-.PHONY : cpp/calculator.s
+cpp/Calculator.s:
+	cd /home/cpp_fall2022/project02/build && $(MAKE) $(MAKESILENT) -f bin/CMakeFiles/calculator.dir/build.make bin/CMakeFiles/calculator.dir/cpp/Calculator.s
+.PHONY : cpp/Calculator.s
 
 # target to build an object file
-cpp/constant.o:
-	cd /home/cpp_fall2022/project02/build && $(MAKE) $(MAKESILENT) -f bin/CMakeFiles/calculator.dir/build.make bin/CMakeFiles/calculator.dir/cpp/constant.o
-.PHONY : cpp/constant.o
+cpp/Constant.o:
+	cd /home/cpp_fall2022/project02/build && $(MAKE) $(MAKESILENT) -f bin/CMakeFiles/calculator.dir/build.make bin/CMakeFiles/calculator.dir/cpp/Constant.o
+.PHONY : cpp/Constant.o
 
 # target to preprocess a source file
-cpp/constant.i:
-	cd /home/cpp_fall2022/project02/build && $(MAKE) $(MAKESILENT) -f bin/CMakeFiles/calculator.dir/build.make bin/CMakeFiles/calculator.dir/cpp/constant.i
-.PHONY : cpp/constant.i
+cpp/Constant.i:
+	cd /home/cpp_fall2022/project02/build && $(MAKE) $(MAKESILENT) -f bin/CMakeFiles/calculator.dir/build.make bin/CMakeFiles/calculator.dir/cpp/Constant.i
+.PHONY : cpp/Constant.i
 
 # target to generate assembly for a file
-cpp/constant.s:
-	cd /home/cpp_fall2022/project02/build && $(MAKE) $(MAKESILENT) -f bin/CMakeFiles/calculator.dir/build.make bin/CMakeFiles/calculator.dir/cpp/constant.s
-.PHONY : cpp/constant.s
+cpp/Constant.s:
+	cd /home/cpp_fall2022/project02/build && $(MAKE) $(MAKESILENT) -f bin/CMakeFiles/calculator.dir/build.make bin/CMakeFiles/calculator.dir/cpp/Constant.s
+.PHONY : cpp/Constant.s
+
+# target to build an object file
+cpp/Exception.o:
+	cd /home/cpp_fall2022/project02/build && $(MAKE) $(MAKESILENT) -f bin/CMakeFiles/calculator.dir/build.make bin/CMakeFiles/calculator.dir/cpp/Exception.o
+.PHONY : cpp/Exception.o
+
+# target to preprocess a source file
+cpp/Exception.i:
+	cd /home/cpp_fall2022/project02/build && $(MAKE) $(MAKESILENT) -f bin/CMakeFiles/calculator.dir/build.make bin/CMakeFiles/calculator.dir/cpp/Exception.i
+.PHONY : cpp/Exception.i
+
+# target to generate assembly for a file
+cpp/Exception.s:
+	cd /home/cpp_fall2022/project02/build && $(MAKE) $(MAKESILENT) -f bin/CMakeFiles/calculator.dir/build.make bin/CMakeFiles/calculator.dir/cpp/Exception.s
+.PHONY : cpp/Exception.s
+
+# target to build an object file
+cpp/NumberCheck.o:
+	cd /home/cpp_fall2022/project02/build && $(MAKE) $(MAKESILENT) -f bin/CMakeFiles/calculator.dir/build.make bin/CMakeFiles/calculator.dir/cpp/NumberCheck.o
+.PHONY : cpp/NumberCheck.o
+
+# target to preprocess a source file
+cpp/NumberCheck.i:
+	cd /home/cpp_fall2022/project02/build && $(MAKE) $(MAKESILENT) -f bin/CMakeFiles/calculator.dir/build.make bin/CMakeFiles/calculator.dir/cpp/NumberCheck.i
+.PHONY : cpp/NumberCheck.i
+
+# target to generate assembly for a file
+cpp/NumberCheck.s:
+	cd /home/cpp_fall2022/project02/build && $(MAKE) $(MAKESILENT) -f bin/CMakeFiles/calculator.dir/build.make bin/CMakeFiles/calculator.dir/cpp/NumberCheck.s
+.PHONY : cpp/NumberCheck.s
 
 # target to build an object file
 cpp/main.o:
@@ -251,12 +281,18 @@ help:
 	@echo "... cpp/BigNumber.o"
 	@echo "... cpp/BigNumber.i"
 	@echo "... cpp/BigNumber.s"
-	@echo "... cpp/calculator.o"
-	@echo "... cpp/calculator.i"
-	@echo "... cpp/calculator.s"
-	@echo "... cpp/constant.o"
-	@echo "... cpp/constant.i"
-	@echo "... cpp/constant.s"
+	@echo "... cpp/Calculator.o"
+	@echo "... cpp/Calculator.i"
+	@echo "... cpp/Calculator.s"
+	@echo "... cpp/Constant.o"
+	@echo "... cpp/Constant.i"
+	@echo "... cpp/Constant.s"
+	@echo "... cpp/Exception.o"
+	@echo "... cpp/Exception.i"
+	@echo "... cpp/Exception.s"
+	@echo "... cpp/NumberCheck.o"
+	@echo "... cpp/NumberCheck.i"
+	@echo "... cpp/NumberCheck.s"
 	@echo "... cpp/main.o"
 	@echo "... cpp/main.i"
 	@echo "... cpp/main.s"

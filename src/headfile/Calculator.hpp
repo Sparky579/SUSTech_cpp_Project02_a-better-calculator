@@ -5,9 +5,9 @@
 #include <vector>
 struct calculator
 {
-    int variableNum;
-    std::map<std::string, int> variableId;
-    std::vector<BigNumber> variables;
+    int32_t variableNum;                           // 计算器中存储的变量的个数
+    std::map<std::string, int32_t> variableId;     // 变量名称对其值存储位置
+    std::vector<BigNumber> variables;          // 存储变量的值
     calculator();
     char Procede(char a, char b);
     void show_variables();

@@ -1,5 +1,7 @@
-#include "../headfile/calculator.hpp"
-#include "../headfile/constant.hpp"
+#include "../headfile/Calculator.hpp"
+#include "../headfile/Constant.hpp"
+#include "../headfile/Exception.hpp"
+#include "../headfile/NumberCheck.hpp"
 #include <map>
 #include <stack>
 #include <string>
@@ -16,8 +18,12 @@ char priority[10][10] = {
     {'>', '>', '>', '>', '<', '>', '>', '>', '<', '>'},
     {'>', '>', '>', '>', '<', '>', '>', '>', '>', '>'},
     {'<', '<', '<', '<', '<', '0', '0', '<', '<', '<'}};
+// 设置优先级别表，从左到右和从上到下对于的符号为：+ - * / % ( ) # ^ 函数
 calculator::calculator()
 {
+    /*
+        初始化计算器结构体，新建一个 last 变量表示上一次计算得到的值。
+    */
     variableNum = 0;
     variableId.clear();
     variables.clear();
@@ -25,7 +31,10 @@ calculator::calculator()
 }
 char calculator::Procede(char a, char b)
 {
-    int i = 9, j = 9;
+    /*
+        对两个运算符找到其优先级别关系。
+    */
+    int32_t i = 9, j = 9;
     switch (a)
     {
     case '+':
@@ -90,13 +99,19 @@ char calculator::Procede(char a, char b)
 }
 void calculator::show_variables()
 {
-    for (std::map<std::string, int>::iterator it = variableId.begin(); it != variableId.end(); it++)
+    /*
+        展示所有变量及它的值，用于调试信息。
+    */
+    for (std::map<std::string, int32_t>::iterator it = variableId.begin(); it != variableId.end(); it++)
     {
         std::cout << it->first << " : " << variables[it->second].to_string() << std::endl;
     }
 }
 BigNumber calculator::getval(std::string val_str)
 {
+    /*
+        将表示变量或者数字的 字符串 转换为 BigNumber 数值。
+    */
     bool negative = false;
     if (val_str[0] == '-')
     {
@@ -121,6 +136,9 @@ BigNumber calculator::getval(std::string val_str)
 }
 char calculator::getFunctionId(std::string name)
 {
+    /*
+        将 name 表示的函数名称转换为一个字母表示的单目运算符。
+    */
     if (name == "sqrt")
         return 'a';
     if (name == "trunc")
@@ -153,10 +171,16 @@ char calculator::getFunctionId(std::string name)
 }
 bool calculator::isoperator(char ch)
 {
+    /*
+        检测符号 ch 是否为运算符。
+    */
     return (ch == '(' || ch == '+' || ch == '-' || ch == '*' || ch == '/' || ch == '%' || ch == ')' || ch == '#' || ch == '^');
 }
 BigNumber calculator::do_operation(BigNumber num1, BigNumber num2, char op)
 {
+    /*
+        根据给定的运算符 op 计算 num1 op num2的值。
+    */
     if (op == '+')
         return num1 + num2;
     else if (op == '-')
@@ -167,11 +191,16 @@ BigNumber calculator::do_operation(BigNumber num1, BigNumber num2, char op)
         return num1 / num2;
     else if (op == '%')
         return num1 % num2;
-    else
+    else if (op == '^')
         return num1 ^ num2;
+    throw expression_parse_error("undefined OPERATOR used.");
+    return 0;
 }
 BigNumber calculator::do_function(BigNumber num, char op)
 {
+    /*
+        根据给定的单目运算符 op 计算 op(num) 的值。
+    */
     if (op == 'a')
         return sqrt(num);
     if (op == 'b')
@@ -200,11 +229,14 @@ BigNumber calculator::do_function(BigNumber num, char op)
         return arcsin(num);
     if (op == 'n')
         return arccos(num);
-    return num;
+    throw expression_parse_error("undefined FUNCTION called.");
 }
 BigNumber calculator::calculate(std::string expression)
 {
-    for (int i = 0; i < expression.size(); i++)
+    /*
+        计算表达式 expression 的值。
+    */
+    for (int32_t i = 0; i < expression.size(); i++)
     {
         if (expression[i] == '[' || expression[i] == '{')
         {
@@ -224,7 +256,7 @@ BigNumber calculator::calculate(std::string expression)
         expression = "0" + expression;
     }
     expression += '#';
-    int k = 1;
+    int32_t k = 1;
     char c = expression[0];
     while (c != '#' || stack_ch.top() != '#')
     {
@@ -243,13 +275,23 @@ BigNumber calculator::calculate(std::string expression)
             }
             else
             {
-                stack_num.push(getval(newNum));
+                try
+                {
+                    stack_num.push(getval(newNum));
+                }
+                catch (std::exception &e)
+                {
+                    throw expression_parse_error("undefined FUNCTION or VARIALE called.");
+                }
             }
         }
         else
         {
             switch (Procede(stack_ch.top(), c))
             {
+            case '0':
+                throw expression_parse_error("Bracket can NOT MATCH.");
+                break;
             case '<':
                 stack_ch.push(c);
                 c = expression[k++];
@@ -281,11 +323,35 @@ BigNumber calculator::calculate(std::string expression)
 }
 void calculator::modify_variables(std::string varName, std::string expression)
 {
+    /*
+        将变量 varName 赋值为 expression 计算出的值。
+        特别地，scale 应该设置为一个[0, ongestDigitSize] 的非负整数。
+    */
     if (varName == "scale")
     {
-        scale = 0;
-        for (int i = 0; i < expression.length(); i++)
-            scale = scale * 10 + expression[i] - '0';
+        if (expression[0] == '-')
+        {
+            throw expression_parse_error("The value of \"scale\" can NOT be NEGATIVE.");
+        }
+        for (int32_t i = 0; i < expression.size(); i++)
+        {
+            if (expression[i] > '9' || expression[i] < '0')
+            {
+                throw expression_parse_error("The value of \"scale\" MUST be a POSITIVE int32_tEGER.");
+            }
+        }
+        if (expression.size() > 8)
+        {
+            throw expression_parse_error("The value of \"scale\" is too LARGE.");
+        }
+        int32_t scale_in = 0;
+        for (int32_t i = 0; i < expression.length(); i++)
+            scale_in = scale_in * 10 + expression[i] - '0';
+        if (scale_in > longestDigitSize)
+        {
+            throw expression_parse_error("The value of \"scale\" is too LARGE.");
+        }
+        scale = scale_in;
         return;
     }
     BigNumber varval = calculate(expression);
@@ -301,29 +367,51 @@ void calculator::modify_variables(std::string varName, std::string expression)
 }
 void calculator::call(std::string statement)
 {
-    std::string no_blank_statement = "";
-    for (int i = 0; i < statement.length(); i++)
-        if (statement[i] != ' ')
-        {
-            no_blank_statement += statement[i];
-        }
-    statement = no_blank_statement;
-    int posEqual = -1;
-    for (int i = 0; i < statement.length(); i++)
-        if (statement[i] == '=')
-        {
-            posEqual = i;
-            break;
-        }
-    if (posEqual == -1)
+    /*
+        对于读入的每一条赋值或者计算语句 statement 进行执行。
+    */
+    try
     {
-        modify_variables("last", statement);
-        std::cout << getval("last").to_string() << std::endl;
+        std::string no_blank_statement = "";
+        for (int32_t i = 0; i < statement.length(); i++)
+            if (statement[i] != ' ')
+            {
+                no_blank_statement += statement[i];
+            }
+        statement = no_blank_statement;
+        int32_t posEqual = -1;
+        for (int i = 0; i < statement.length(); i++)
+            if (statement[i] == '=')
+            {
+                posEqual = i;
+                break;
+            }
+        if (posEqual == -1)
+        {
+            modify_variables("last", statement);
+            std::cout << getval("last").to_string() << std::endl;
+        }
+        else
+        {
+            std::string varName = statement.substr(0, posEqual);
+            std::string expression = statement.substr(posEqual + 1);
+            modify_variables(varName, expression);
+        }
     }
-    else
+    catch (number_calculate_error &e)
     {
-        std::string varName = statement.substr(0, posEqual);
-        std::string expression = statement.substr(posEqual + 1);
-        modify_variables(varName, expression);
+        std::cout << "An ERROR occurred while calculating: " << e.reason_ << std::endl;
+    }
+    catch (number_parse_error &e)
+    {
+        std::cout << "An ERROR occurred while construct numbers: " << e.reason_ << std::endl;
+    }
+    catch (expression_parse_error &e)
+    {
+        std::cout << "An ERROR occurred while processing expression: " << e.reason_ << std::endl;
+    }
+    catch (std::exception *e)
+    {
+        std::cout << "Expression Parsing Error." << std::endl;
     }
 }
