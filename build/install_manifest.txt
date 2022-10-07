@@ -1,4 +1,0 @@
-/usr/local/share/doc/cmake/COPYRIGHT
-/usr/local/share/doc/cmake/README
-/usr/local/bin/Run_Calculator.sh
-/usr/local/share/doc/cmake/calculator.txt
