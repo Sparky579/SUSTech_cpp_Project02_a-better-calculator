@@ -13,7 +13,10 @@
 
 ## 如何运行
 
-项目支持推荐在 `Ubuntu` 环境下运行。
+项目推荐在 `Ubuntu` 环境下运行。
 
 1. 使用命令  `git clone https://github.com/Maystern/SUSTech_cpp_Project02_a-better-calculator.git` 将项目下载到当前目录。
-2. 在当前目录中执行
+2. 在当前目录下执行`cd SUSTech_cpp_Project02_a-better-calculator` 进入项目根目录。
+3. 在项目根目录执行`sh Run_Calculator.sh` 命令，该命令执行后，将在`./build`中自动使用 `cmake` 编译原代码文件，并打开位于`./build/bin`目录下的二进制可执行程序`calculator`。
+4. 您只需要在接下去的`终端`中输入命令即可使用计算器。
+
