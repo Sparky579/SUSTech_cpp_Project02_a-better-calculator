@@ -45,7 +45,7 @@ endif()
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
   file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/doc/cmake" TYPE FILE FILES
     "/home/cpp_fall2022/project02/COPYRIGHT"
-    "/home/cpp_fall2022/project02/README"
+    "/home/cpp_fall2022/project02/README.md"
     )
 endif()
 
