@@ -278,8 +278,11 @@ BigNumber calculator::calculate(std::string expression)
                 try
                 {
                     stack_num.push(getval(newNum));
-                }
-                catch (std::exception &e)
+                }catch (number_calculate_error &e) {
+                    throw e;
+                }catch (number_parse_error &e) {
+                    throw e;
+                }catch (std::exception &e)
                 {
                     throw expression_parse_error("undefined FUNCTION or VARIALE called.");
                 }
@@ -327,6 +330,9 @@ void calculator::modify_variables(std::string varName, std::string expression)
         将变量 varName 赋值为 expression 计算出的值。
         特别地，scale 应该设置为一个[0, ongestDigitSize] 的非负整数。
     */
+    if (numTest(varName) == 0) {
+        throw expression_parse_error("Numbers can NOT be assigned as variables.");
+    } 
     if (varName == "scale")
     {
         if (expression[0] == '-')
@@ -337,7 +343,7 @@ void calculator::modify_variables(std::string varName, std::string expression)
         {
             if (expression[i] > '9' || expression[i] < '0')
             {
-                throw expression_parse_error("The value of \"scale\" MUST be a POSITIVE int32_tEGER.");
+                throw expression_parse_error("The value of \"scale\" MUST be a POSITIVE INTEGER.");
             }
         }
         if (expression.size() > 8)
@@ -410,7 +416,7 @@ void calculator::call(std::string statement)
     {
         std::cout << "An ERROR occurred while processing expression: " << e.reason_ << std::endl;
     }
-    catch (std::exception *e)
+    catch (std::exception &e)
     {
         std::cout << "Expression Parsing Error." << std::endl;
     }

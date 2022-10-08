@@ -1113,7 +1113,10 @@ BigNumber arccot(BigNumber num)
     return get_2pi() - arctan(num);
 }
 BigNumber arcsin(BigNumber num)
-{
+{   
+    if (num > (std::string) "1" || num < (std::string) "-1") {
+        throw number_calculate_error("Number is OUT of DOMAIN [-1, 1] encountered during arcsin().");
+    }
     /*
         计算 arcsin (num) 的值。
     */
@@ -1121,6 +1124,9 @@ BigNumber arcsin(BigNumber num)
 }
 BigNumber arccos(BigNumber num)
 {
+    if (num > (std::string) "1" || num < (std::string) "-1") {
+        throw number_calculate_error("Number is OUT of DOMAIN [-1, 1] encountered during arccos().");
+    }
     /*
         计算 arccos (num) 的值。
     */
