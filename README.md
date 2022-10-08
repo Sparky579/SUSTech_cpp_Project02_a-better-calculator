@@ -11,6 +11,13 @@
 - 多运算符和数学函数支持：项目实现了`+ - * / % ^` 运算以及 `sqrt()` （开根号）`trunc()`（截取整数）`floor()`（向下取整）`ceil()`（向上取整）`exp()` （自然指数）`ln()` （自然对数）`fac()` （阶乘）`sin()/cos()/tan()` （三角函数）`arcsin()/arccos()/arctan()` （反三角函数）等数学函数。
 - 一些人性化设计：自动忽略输入表达式的所有空格、错误信息提示、多括号输入、科学记数法输入等。
 
+您可以在这里查看项目要求：[project02要求](https://github.com/Maystern/SUSTech_cpp_Project02_a-better-calculator/blob/master/doc/project2.pdf)。
+
+您可以在这里查看我的项目pdf报告：[project02项目报告pdf](https://github.com/Maystern/SUSTech_cpp_Project02_a-better-calculator/blob/master/doc/Project02%20A%20Better%20Calculator.pdf)。
+
+您可以在这里查看我的项目md报告：[project02项目报告md](https://github.com/Maystern/SUSTech_cpp_Project02_a-better-calculator/blob/master/doc/Project02%20A%20Better%20Calculator.md)。
+
+
 ## 如何运行
 
 项目推荐在 `Ubuntu` 环境下运行。
