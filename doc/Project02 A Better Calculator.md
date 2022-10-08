@@ -630,7 +630,7 @@ x+2*y
 
 关于代码量，我使用了`cloc` 工具进行了统计，结果如下：
 
-![image-20221008145432593](https://raw.githubusercontent.com/Maystern/picbed/main/img/202210081454656.png)
+![image-20221008151909164](https://raw.githubusercontent.com/Maystern/picbed/main/img/202210081519243.png)
 
 ## 程序实现效果
 
