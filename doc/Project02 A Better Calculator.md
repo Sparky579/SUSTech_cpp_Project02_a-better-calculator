@@ -692,6 +692,12 @@ x+2*y
 
 ![image-20221008143215211](https://raw.githubusercontent.com/Maystern/picbed/main/img/202210081432270.png)
 
+`例子13` 项目自动定义`last` 变量，记录上一次表达式计算的值
+
+![image-20221008153210020](https://raw.githubusercontent.com/Maystern/picbed/main/img/202210081532073.png)
+
+
+
 ## 一些问题
 
 在功能上，项目虽然实现了很多功能，但在如下方面可供探讨和完善：
@@ -712,8 +718,4 @@ x+2*y
 非常欢迎您对此提出宝贵的批评与意见。
 
 非常感谢您能看到这里！
-
-
-
-
 

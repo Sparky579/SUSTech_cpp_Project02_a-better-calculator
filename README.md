@@ -16,8 +16,6 @@
 您可以在这里查看我的项目pdf报告：[project02项目报告pdf](https://github.com/Maystern/SUSTech_cpp_Project02_a-better-calculator/blob/master/doc/Project02%20A%20Better%20Calculator.pdf)。
 
 您可以在这里查看我的项目md报告：[project02项目报告md](https://github.com/Maystern/SUSTech_cpp_Project02_a-better-calculator/blob/master/doc/Project02%20A%20Better%20Calculator.md)。
-
-
 ## 如何运行
 
 项目推荐在 `Ubuntu` 环境下运行。
