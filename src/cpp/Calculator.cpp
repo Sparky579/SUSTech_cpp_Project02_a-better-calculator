@@ -112,10 +112,12 @@ void calculator::show_variables()
 }
 BigNumber calculator::getval(std::string val_str)
 {
-    if (val_str == "PI") {
+    if (val_str == "PI")
+    {
         return getpi();
     }
-    if (val_str == "E") {
+    if (val_str == "E")
+    {
         return exp(1);
     }
     /*
@@ -291,11 +293,16 @@ BigNumber calculator::calculate(std::string expression)
                 try
                 {
                     stack_num.push(getval(newNum));
-                }catch (number_calculate_error &e) {
+                }
+                catch (number_calculate_error &e)
+                {
                     throw e;
-                }catch (number_parse_error &e) {
+                }
+                catch (number_parse_error &e)
+                {
                     throw e;
-                }catch (std::exception &e)
+                }
+                catch (std::exception &e)
                 {
                     throw expression_parse_error("undefined FUNCTION or VARIALE called.");
                 }
@@ -303,7 +310,8 @@ BigNumber calculator::calculate(std::string expression)
         }
         else
         {
-            if (stack_ch.size() == 0) {
+            if (stack_ch.size() == 0)
+            {
                 throw expression_parse_error("Expression Parsing Error.");
             }
             switch (Procede(stack_ch.top(), c))
@@ -319,7 +327,8 @@ BigNumber calculator::calculate(std::string expression)
                 stack_ch.pop();
                 if (stack_ch.size() && !isoperator(stack_ch.top()))
                 {
-                    if (stack_num.size() == 0) {
+                    if (stack_num.size() == 0)
+                    {
                         throw expression_parse_error("Expression Parsing Error.");
                     }
                     BigNumber x = stack_num.top();
@@ -332,8 +341,9 @@ BigNumber calculator::calculate(std::string expression)
             case '>':
                 char op = stack_ch.top();
                 stack_ch.pop();
-                if (stack_num.size() <= 1) {
-                        throw expression_parse_error("Expression Parsing Error.");
+                if (stack_num.size() <= 1)
+                {
+                    throw expression_parse_error("Expression Parsing Error.");
                 }
                 BigNumber x = stack_num.top();
                 stack_num.pop();
@@ -352,13 +362,16 @@ void calculator::modify_variables(std::string varName, std::string expression)
         将变量 varName 赋值为 expression 计算出的值。
         特别地，scale 应该设置为一个[0, ongestDigitSize] 的非负整数。
     */
-    if (numTest(varName) == 0) {
+    if (numTest(varName) == 0)
+    {
         throw expression_parse_error("Numbers can NOT be assigned as variables.");
     }
-    if (varName == "PI") {
+    if (varName == "PI")
+    {
         throw expression_parse_error("PI is a constant and can NOT be assigned.");
     }
-    if (varName == "E") {
+    if (varName == "E")
+    {
         throw expression_parse_error("E is a constant and can NOT be assigned.");
     }
     if (varName == "scale")
@@ -399,7 +412,8 @@ void calculator::modify_variables(std::string varName, std::string expression)
         variables[variableId[varName]] = varval;
     }
 }
-std::string statement_format(std::string statement) {
+std::string statement_format(std::string statement)
+{
     std::string no_blank_statement = "";
     for (int32_t i = 0; i < statement.length(); i++)
         if (statement[i] != ' ')
@@ -407,7 +421,8 @@ std::string statement_format(std::string statement) {
             no_blank_statement += statement[i];
         }
     statement = no_blank_statement;
-    if (statement.length() >= 2 && statement[0] == '/' && statement[1] == '/') {
+    if (statement.length() >= 2 && statement[0] == '/' && statement[1] == '/')
+    {
         return "";
     }
     return statement;
@@ -418,8 +433,10 @@ void calculator::call(std::string statement)
         对于读入的每一条赋值或者计算语句 statement 进行执行。
     */
     statement = statement_format(statement);
-    if (statement == "") return;
-    if (statement == "welcome") {
+    if (statement == "")
+        return;
+    if (statement == "welcome")
+    {
         std::cout << R"(---------------------------------------------------------------------------------------
 Welcome using this simple calculator!
 This calculator is mainly for the Project02 in CS205(C/C++) course.
@@ -432,10 +449,11 @@ If you need help, please print "help" to get some information.
 If you need quit, please print "quit" or "Ctrl + C" to quit.
 GitHub URL: https://github.com/Maystern/SUSTech_cpp_Project02_a-better-calculator.
 ---------------------------------------------------------------------------------------)"
-        << std::endl;
+                  << std::endl;
         return;
     }
-    if (statement == "help") {
+    if (statement == "help")
+    {
         std::cout << R"(---------------------------------------------------------------------------------------
 This is the instruction to the calculator user.
 Author: Jiacheng Luo
@@ -582,7 +600,7 @@ GitHub URL: https://github.com/Maystern/SUSTech_cpp_Project02_a-better-calculato
 
 If you need help again, please print "help" to get this information again.
 ---------------------------------------------------------------------------------------)"
-        << std::endl;
+                  << std::endl;
         return;
     }
     try

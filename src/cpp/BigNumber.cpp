@@ -303,42 +303,42 @@ int32_t BigNumberCmp(BigNumber num1, BigNumber num2)
 }
 bool operator<(BigNumber num1, BigNumber num2)
 {
-    /* 
-        重载两个BigNumber 类型数据的小于号 < 
+    /*
+        重载两个BigNumber 类型数据的小于号 <
     */
     return BigNumberCmp(num1, num2) < 0;
 }
 bool operator<=(BigNumber num1, BigNumber num2)
 {
-    /* 
-        重载两个BigNumber 类型数据的小于等于号 <= 
+    /*
+        重载两个BigNumber 类型数据的小于等于号 <=
     */
     return BigNumberCmp(num1, num2) <= 0;
 }
 bool operator==(BigNumber num1, BigNumber num2)
 {
-    /* 
-        重载两个BigNumber 类型数据的等于号 == 
+    /*
+        重载两个BigNumber 类型数据的等于号 ==
     */
     return BigNumberCmp(num1, num2) == 0;
 }
 bool operator!=(BigNumber num1, BigNumber num2)
 {
-    /* 
-        重载两个BigNumber 类型数据的不等于号 != 
+    /*
+        重载两个BigNumber 类型数据的不等于号 !=
     */
     return BigNumberCmp(num1, num2) != 0;
 }
 bool operator>=(BigNumber num1, BigNumber num2)
 {
-    /* 
-        重载两个BigNumber 类型数据的大于等于号 >= 
+    /*
+        重载两个BigNumber 类型数据的大于等于号 >=
     */
     return BigNumberCmp(num1, num2) >= 0;
 }
 bool operator>(BigNumber num1, BigNumber num2)
 {
-    /* 
+    /*
         重载两个BigNumber 类型数据的大于号 >
     */
     return BigNumberCmp(num1, num2) > 0;
@@ -666,7 +666,7 @@ inline void NTT(Poly &a, int32_t x, int32_t type)
 inline int32_t ceilog(int64_t x)
 {
     /*
-        log2(x) 向上取整。 
+        log2(x) 向上取整。
     */
     int32_t ans = 0;
     while (1ll << ans < x)
@@ -855,7 +855,8 @@ BigNumber abs(BigNumber num)
     /*
         返回对 num 的绝对值。
     */
-    if (num.negative_) num.negative_ = 0;
+    if (num.negative_)
+        num.negative_ = 0;
     return num;
 }
 BigNumber sqrt(BigNumber num)
@@ -896,10 +897,12 @@ BigNumber fac(BigNumber num)
     /*
         计算 num 的阶乘，当 num < 0 或者 当 num 不为整数时候报错。
     */
-    if (num < 0) {
+    if (num < 0)
+    {
         throw number_calculate_error("NEGATIVE NUMBER encountered during fac().");
     }
-    if (num != trunc(num)) {
+    if (num != trunc(num))
+    {
         throw number_calculate_error("FLOAT NUMBER encountered during fac().");
     }
     BigNumber res_fac = 1;
@@ -1144,8 +1147,9 @@ BigNumber arccot(BigNumber num)
     return get_2pi() - arctan(num);
 }
 BigNumber arcsin(BigNumber num)
-{   
-    if (num > (std::string) "1" || num < (std::string) "-1") {
+{
+    if (num > (std::string) "1" || num < (std::string) "-1")
+    {
         throw number_calculate_error("Number is OUT of DOMAIN [-1, 1] encountered during arcsin().");
     }
     /*
@@ -1155,7 +1159,8 @@ BigNumber arcsin(BigNumber num)
 }
 BigNumber arccos(BigNumber num)
 {
-    if (num > (std::string) "1" || num < (std::string) "-1") {
+    if (num > (std::string) "1" || num < (std::string) "-1")
+    {
         throw number_calculate_error("Number is OUT of DOMAIN [-1, 1] encountered during arccos().");
     }
     /*
