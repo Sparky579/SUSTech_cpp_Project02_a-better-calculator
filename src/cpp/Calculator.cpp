@@ -2,11 +2,13 @@
 #include "../headfile/Constant.hpp"
 #include "../headfile/Exception.hpp"
 #include "../headfile/NumberCheck.hpp"
+#include "../headfile/BigNumber.hpp"
 #include <map>
 #include <stack>
 #include <string>
 #include <vector>
 #include <iostream>
+#include <fstream>
 char priority[10][10] = {
     {'>', '>', '<', '<', '<', '>', '>', '<', '<', '>'},
     {'>', '>', '<', '<', '<', '>', '>', '<', '<', '>'},
@@ -28,6 +30,7 @@ calculator::calculator()
     variableId.clear();
     variables.clear();
     modify_variables("last", "0");
+    call("welcome");
 }
 char calculator::Procede(char a, char b)
 {
@@ -109,6 +112,12 @@ void calculator::show_variables()
 }
 BigNumber calculator::getval(std::string val_str)
 {
+    if (val_str == "PI") {
+        return getpi();
+    }
+    if (val_str == "E") {
+        return exp(1);
+    }
     /*
         将表示变量或者数字的 字符串 转换为 BigNumber 数值。
     */
@@ -167,6 +176,8 @@ char calculator::getFunctionId(std::string name)
         return 'm';
     if (name == "arccos")
         return 'n';
+    if (name == "abs")
+        return 'o';
     return 0;
 }
 bool calculator::isoperator(char ch)
@@ -229,6 +240,8 @@ BigNumber calculator::do_function(BigNumber num, char op)
         return arcsin(num);
     if (op == 'n')
         return arccos(num);
+    if (op == 'o')
+        return abs(num);
     throw expression_parse_error("undefined FUNCTION called.");
 }
 BigNumber calculator::calculate(std::string expression)
@@ -290,6 +303,9 @@ BigNumber calculator::calculate(std::string expression)
         }
         else
         {
+            if (stack_ch.size() == 0) {
+                throw expression_parse_error("Expression Parsing Error.");
+            }
             switch (Procede(stack_ch.top(), c))
             {
             case '0':
@@ -303,6 +319,9 @@ BigNumber calculator::calculate(std::string expression)
                 stack_ch.pop();
                 if (stack_ch.size() && !isoperator(stack_ch.top()))
                 {
+                    if (stack_num.size() == 0) {
+                        throw expression_parse_error("Expression Parsing Error.");
+                    }
                     BigNumber x = stack_num.top();
                     stack_num.pop();
                     stack_num.push(do_function(x, stack_ch.top()));
@@ -313,6 +332,9 @@ BigNumber calculator::calculate(std::string expression)
             case '>':
                 char op = stack_ch.top();
                 stack_ch.pop();
+                if (stack_num.size() <= 1) {
+                        throw expression_parse_error("Expression Parsing Error.");
+                }
                 BigNumber x = stack_num.top();
                 stack_num.pop();
                 BigNumber y = stack_num.top();
@@ -332,7 +354,13 @@ void calculator::modify_variables(std::string varName, std::string expression)
     */
     if (numTest(varName) == 0) {
         throw expression_parse_error("Numbers can NOT be assigned as variables.");
-    } 
+    }
+    if (varName == "PI") {
+        throw expression_parse_error("PI is a constant and can NOT be assigned.");
+    }
+    if (varName == "E") {
+        throw expression_parse_error("E is a constant and can NOT be assigned.");
+    }
     if (varName == "scale")
     {
         if (expression[0] == '-')
@@ -371,20 +399,194 @@ void calculator::modify_variables(std::string varName, std::string expression)
         variables[variableId[varName]] = varval;
     }
 }
+std::string statement_format(std::string statement) {
+    std::string no_blank_statement = "";
+    for (int32_t i = 0; i < statement.length(); i++)
+        if (statement[i] != ' ')
+        {
+            no_blank_statement += statement[i];
+        }
+    statement = no_blank_statement;
+    if (statement.length() >= 2 && statement[0] == '/' && statement[1] == '/') {
+        return "";
+    }
+    return statement;
+}
 void calculator::call(std::string statement)
 {
     /*
         对于读入的每一条赋值或者计算语句 statement 进行执行。
     */
+    statement = statement_format(statement);
+    if (statement == "") return;
+    if (statement == "welcome") {
+        std::cout << R"(---------------------------------------------------------------------------------------
+Welcome using this simple calculator!
+This calculator is mainly for the Project02 in CS205(C/C++) course.
+This calculator is much better than that in Project01.
+Course Instructor: Shiqi Yu
+Author: Jiacheng Luo
+Version: v1.06
+If you need welcome, please print "welcome" to this information again.
+If you need help, please print "help" to get some information.
+If you need quit, please print "quit" or "Ctrl + C" to quit.
+GitHub URL: https://github.com/Maystern/SUSTech_cpp_Project02_a-better-calculator.
+---------------------------------------------------------------------------------------)"
+        << std::endl;
+        return;
+    }
+    if (statement == "help") {
+        std::cout << R"(---------------------------------------------------------------------------------------
+This is the instruction to the calculator user.
+Author: Jiacheng Luo
+Version: v1.06
+GitHub URL: https://github.com/Maystern/SUSTech_cpp_Project02_a-better-calculator.
+
+1. Use common decimal point notation or scientific notation to represent numbers.
+    [example 1-1]
+    -3.14e-1
+    -0.314
+    1.234
+    1.234
+   If your numerical representation is incorrect, an error will occur.
+    [example 1-2]
+    1.e30.1
+    An ERROR occurred while construct numbers: Entering a number in the WRONG FORMAT.
+2. Some basic operators are supported: + - * / % ^
+    [example 2-1]
+    1 + 1
+    2
+    2 - 3
+    -1
+    3 * 4
+    12
+    9 / 4
+    2
+    9 % 4
+    1
+    2 ^ 10
+    1024
+    When the calculation is illegal or the result is too large, an error will occur.
+    [example 2-2]
+    1 / 0
+    An ERROR occurred while calculating: Divisor can NOT be ZERO.
+    1e10000000 * 1e10000000
+    An ERROR occurred while calculating: The number of SIGNIFICANT DIGITS is too LARGE.
+3. Use the "scale" variable to adjust the calculation precision.
+    [example 3-1]
+    scale = 0
+    10 / 3
+    3
+    scale = 3
+    10 / 3
+    3.333
+    scale = 10
+    10 / 3
+    3.3333333333
+   The accuracy for operator "+","-","*" will not be adjusted due to the change of "scale".
+    [example 3-2]
+   scale = 1
+   1.12 + 1.34
+   2.46
+   1.12 - 1.34
+   -0.22
+   1.12 * 1.34
+   1.5008
+4. Constants that can be used in the calculator are E and PI.
+    [example 4-1]
+    scale = 10
+    E
+    2.7182818283
+    PI
+    3.1415926535
+   When trying to modify the value of a constant, an error will occur.
+   [example 4-2]
+   E = 2.71
+   An ERROR occurred while processing expression: E is a constant and can NOT be assigned.
+5. You can use variables to register the calculation results.
+    [example 5-1]
+    x = 1 + 1
+    y = 2 * x + 1
+    x + 2 * y
+    12
+   Any non number can be used as a variable name.
+    [example 5-2]
+    1__x = 1 + 1
+    hi123 = 2 * 1__x + 1
+    1__x + 2 * hi123
+    12
+   Use the default variable "last" to calculate the last calculation result.
+    [example 5-3]
+    1 + 1
+    2
+    last ^ last
+    4
+   When using variables when they are undefined, an error will occur.
+    [example 5-4]
+    2 * tmp
+    An ERROR occurred while construct numbers: Entering a number in the WRONG FORMAT. 
+6. Some mathematical functions will be supported: 
+    [example 6-1]
+    scale = 10
+    trunc(3.14)
+    3
+    floor(-3.14)
+    -4
+    ceil(3.14)
+    4
+    sqrt(3)
+    1.7320508075
+    exp(3)
+    20.0855369227
+    ln(3)
+    1.0986122496
+    fac(3)
+    6
+    abs(-3.145)
+    3.145
+    sin(3)
+    0.1411200081
+    cos(3)
+    -0.9899924962
+    tan(3)
+    -0.1425465431
+    arcsin(0.5)
+    0.5235987756
+    arccos(0.5)
+    1.0471975485
+    arctan(0.5)
+    0.4636476090
+   When the function input is illegal, an error will occur.
+   [example 6-2]
+    sqrt(-1)
+    An ERROR occurred while calculating: NEGATIVE NUMBER encountered during sqrt().
+    fac(3.1)
+    An ERROR occurred while calculating: FLOAT NUMBER encountered during fac().
+7.Input to ignore spaces automatically. { [ is considered as ( , } ] is considered as )
+    [example 7-1]
+    scale = 10
+    (2 + 3) * [1 + 4] * {1 / 4}
+    6.2500000000
+    sqrt(sqrt{sqrt[16]})
+    1.4142135623
+   When brackets do not match, an error will occur.
+    [example 7-2]
+    (1.14))
+    An ERROR occurred while processing expression: Bracket can NOT MATCH.
+8.Single line comments are supported.
+    [example 8-1]
+    x = 1
+    // x = 2
+    x + 1
+    2
+
+If you need help again, please print "help" to get this information again.
+---------------------------------------------------------------------------------------)"
+        << std::endl;
+        return;
+    }
     try
     {
-        std::string no_blank_statement = "";
-        for (int32_t i = 0; i < statement.length(); i++)
-            if (statement[i] != ' ')
-            {
-                no_blank_statement += statement[i];
-            }
-        statement = no_blank_statement;
         int32_t posEqual = -1;
         for (int i = 0; i < statement.length(); i++)
             if (statement[i] == '=')

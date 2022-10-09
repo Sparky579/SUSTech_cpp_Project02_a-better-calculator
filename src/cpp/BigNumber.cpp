@@ -622,12 +622,12 @@ BigNumber operator*=(BigNumber &num1, BigNumber num2)
 }
 
 typedef std::vector<int32_t> Poly; // 多项式的系数表示
-inline long long quick_pow(long long a, long long m)
+inline int64_t quick_pow(int64_t a, int64_t m)
 {
     /*
         快速幂用来计算整数 a ^ m
     */
-    long long ans = 1;
+    int64_t ans = 1;
     for (; m; m >>= 1, a = a * a % mod)
         if (m & 1)
             ans = ans * a % mod;
@@ -653,17 +653,17 @@ inline void NTT(Poly &a, int32_t x, int32_t type)
             int32_t d = 1;
             for (int32_t j = 0; j < mid; ++j)
             {
-                int32_t u = a[j + k], v = (long long)a[j + k + mid] * d % mod;
+                int32_t u = a[j + k], v = (int64_t)a[j + k + mid] * d % mod;
                 a[j + k] = (u + v) % mod, a[j + k + mid] = (u - v + mod) % mod;
-                d = (long long)d * w % mod;
+                d = (int64_t)d * w % mod;
             }
         }
     }
     if (type == -1)
         for (int32_t i = 0, inv = quick_pow(n, mod - 2); i < n; ++i)
-            a[i] = (long long)a[i] * inv % mod;
+            a[i] = (int64_t)a[i] * inv % mod;
 }
-inline int32_t ceilog(long long x)
+inline int32_t ceilog(int64_t x)
 {
     /*
         log2(x) 向上取整。 
@@ -683,7 +683,7 @@ Poly operator*(Poly A, Poly B)
     A.resize(1 << x), B.resize(1 << x);
     NTT(A, x, 1), NTT(B, x, 1);
     for (int32_t i = 0; i < 1 << x; ++i)
-        A[i] = (long long)A[i] * B[i] % mod;
+        A[i] = (int64_t)A[i] * B[i] % mod;
     NTT(A, x, -1);
     A.resize(deg);
     for (int32_t i = deg - 1; i; --i)
@@ -701,7 +701,7 @@ BigNumber BigNumberAbsDiv(BigNumber num1, BigNumber num2, bool negative, bool is
     */
     if (num2 == 0)
     {
-        throw number_calculate_error("Divisor can NOT be ZERO!");
+        throw number_calculate_error("Divisor can NOT be ZERO.");
     }
     int32_t iteration_times = 1;
     int32_t limits = (int32_t)num1.digits_.size() - (int32_t)num2.digits_.size() + scale + 16;
@@ -850,7 +850,14 @@ BigNumber ceil(BigNumber num)
     else
         return trunc_num + 1;
 }
-
+BigNumber abs(BigNumber num)
+{
+    /*
+        返回对 num 的绝对值。
+    */
+    if (num.negative_) num.negative_ = 0;
+    return num;
+}
 BigNumber sqrt(BigNumber num)
 {
     /*
@@ -907,6 +914,7 @@ BigNumber exp(BigNumber num)
     /*
         计算 num 的自然指数，e ^ num
     */
+    scale += 2;
     if (num == 0)
         return 1;
     if (num < 0)
@@ -928,6 +936,7 @@ BigNumber exp(BigNumber num)
             break;
         cur_exp += now_item;
     }
+    scale -= 2;
     return (cur_exp ^ (BigNumber)power).checkScale(scale);
 }
 BigNumber small_ln(BigNumber num)
@@ -994,6 +1003,28 @@ BigNumber get2pi()
             break;
         now_pi += now_item;
     }
+    return now_pi.checkScale(scale);
+}
+
+BigNumber getpi()
+{
+    /*
+        迭代计算 2pi 的近似值。
+    */
+    scale += 2;
+    BigNumber eps;
+    eps.negative_ = false;
+    eps.digits_.push_back(1);
+    eps.dotpos_ = scale;
+    BigNumber now_pi = 2, now_item = 2;
+    for (int32_t i = 1;; i++)
+    {
+        now_item = now_item * i / (2 * i + 1);
+        if (BigNumberAbsCmp(now_item, eps) <= 0)
+            break;
+        now_pi += now_item;
+    }
+    scale -= 2;
     return now_pi.checkScale(scale);
 }
 
